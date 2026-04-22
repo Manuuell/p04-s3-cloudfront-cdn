@@ -19,8 +19,6 @@ Proyecto académico de Infraestructura como Código & DevOps.
 | Permisos       | `ReadOnlyAccess` + `IAMUserChangePassword`              |
 | Password       | *(compartido por WhatsApp del grupo)*                   |
 
-> La primera vez pedirá cambiar la contraseña. Política mínima: 8 caracteres, mayúscula, minúscula, número y símbolo.
-
 ### Acceso programático (CLI)
 
 Las `AccessKeyId` y `SecretAccessKey` se comparten **únicamente por canal privado** — nunca en este repositorio.
