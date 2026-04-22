@@ -7,11 +7,64 @@
     <link rel="stylesheet" href="/assets/styles.css">
 </head>
 <body>
+    <nav>
+        <div class="brand">
+            <span class="brand-dot"></span>
+            P04 · CDN AWS
+        </div>
+        <ul class="nav-links">
+            <li><a href="#inicio">Inicio</a></li>
+            <li><a href="#infra">Infra</a></li>
+            <li><a href="#seguridad">Seguridad</a></li>
+            <li><a href="#pipeline">Pipeline</a></li>
+        </ul>
+        <a href="https://github.com/Manuuell/p04-s3-cloudfront-cdn" class="nav-cta">GitHub</a>
+    </nav>
+
     <main>
-        <h1>P04 · Plataforma de Almacenamiento con CDN Global</h1>
-        <p>Distribución servida desde CloudFront con OAC al bucket S3 de assets.</p>
-        <p>Headers de seguridad inyectados por Lambda@Edge en viewer-response.</p>
-        <footer>Desplegado con Terraform + GitHub Actions · Build automático vía OIDC.</footer>
+        <h1>Plataforma de Almacenamiento con CDN Global</h1>
+        <p class="subtitle">S3 · CloudFront · Lambda@Edge · Terraform</p>
+
+        <div class="terminal">
+            <div class="terminal-bar">
+                <span class="dot red"></span>
+                <span class="dot yellow"></span>
+                <span class="dot green"></span>
+                <span class="terminal-title">infra.tf</span>
+            </div>
+            <div class="terminal-body">
+<pre><span class="tok-comment"># Despliegue automático vía OIDC + GitHub Actions</span>
+<span class="tok-keyword">module</span> <span class="tok-string">"cdn"</span> {
+  <span class="tok-keyword">source</span>  = <span class="tok-string">"./modules/cloudfront"</span>
+
+  <span class="tok-keyword">origin</span>          = <span class="tok-string">"s3-assets-prod"</span>
+  <span class="tok-keyword">oac</span>             = <span class="tok-bool">true</span>
+  <span class="tok-keyword">tls</span>             = <span class="tok-string">"ACM (us-east-1)"</span>
+  <span class="tok-keyword">edge_function</span>   = <span class="tok-fn">aws_lambda_function</span>.<span class="tok-keyword">security_headers</span>
+  <span class="tok-keyword">price_class</span>     = <span class="tok-string">"PriceClass_100"</span>
+}
+
+<span class="tok-keyword">resource</span> <span class="tok-string">"aws_s3_bucket_lifecycle"</span> <span class="tok-string">"uploads"</span> {
+  <span class="tok-keyword">transition_to_ia</span>       = <span class="tok-number">30</span>   <span class="tok-comment"># días</span>
+  <span class="tok-keyword">transition_to_glacier</span>  = <span class="tok-number">90</span>
+  <span class="tok-keyword">expiration</span>             = <span class="tok-number">180</span>
+}
+
+<span class="tok-fn">console</span>.<span class="tok-fn">log</span>(<span class="tok-string">"→ https://d14x2vaw9f2mo1.cloudfront.net"</span>)<span class="cursor"></span>
+<span class="tok-comment">// Grade A+ en securityheaders.com ✓</span></pre>
+            </div>
+        </div>
     </main>
+
+    <footer>
+        Desplegado con Terraform + GitHub Actions · Build automático vía OIDC
+        <div class="row">
+            <span class="tag">S3</span>
+            <span class="tag">CloudFront</span>
+            <span class="tag">Lambda@Edge</span>
+            <span class="tag">ACM</span>
+            <span class="tag">OIDC</span>
+        </div>
+    </footer>
 </body>
 </html>
