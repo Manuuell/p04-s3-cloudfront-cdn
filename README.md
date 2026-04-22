@@ -48,31 +48,3 @@ terraform apply -var-file=envs/dev/terraform.tfvars
 # 4. Publicar contenido
 ./scripts/deploy.sh dev
 ```
-
-## Plan de trabajo (8 semanas)
-
-| Semana | Fase | Entregable |
-|--------|------|------------|
-| 1–3 | S3 + Permisos | Buckets configurados (assets, uploads, logs) con cifrado, versionado y lifecycle |
-| 4–6 | CloudFront + TLS | CDN con HTTPS activo, OAC, ACM, Route 53, Lambda@Edge |
-| 7–8 | Pipeline + Pruebas | GitHub Actions publicando + invalidación + métricas |
-
-## Entregables
-
-- Código Terraform completo
-- Lambda@Edge con pruebas unitarias
-- Pipeline GitHub Actions (build → deploy → publish)
-- Informe de costos (Standard vs IA vs Glacier) — `docs/COSTOS.md`
-- Reporte de headers de seguridad — `docs/SEGURIDAD.md`
-- Métricas de CloudFront — `docs/METRICAS.md`
-
-## Criterios de evaluación
-
-| Criterio | Peso |
-|----------|------|
-| S3 Buckets (políticas, cifrado, versionado) | 20% |
-| CloudFront (OAC, TLS, dominio) | 25% |
-| Lifecycle policies | 15% |
-| Lambda@Edge (headers de seguridad) | 20% |
-| Pipeline de publicación | 15% |
-| Análisis de costos y documentación | 5% |
