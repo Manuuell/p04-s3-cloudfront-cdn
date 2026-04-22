@@ -1,8 +1,10 @@
-environment = "dev"
+environment  = "dev"
 project_name = "p04-cdn"
 aws_region   = "us-east-1"
 
-domain_name               = "dev.cdn.ejemplo.com"
+# Sin dominio propio → CloudFront expone https://<id>.cloudfront.net
+use_custom_domain         = false
+domain_name               = ""
 subject_alternative_names = []
 
 logs_retention_days             = 30

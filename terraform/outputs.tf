@@ -20,9 +20,10 @@ output "logs_bucket" {
 }
 
 output "route53_nameservers" {
-  value = module.route53.nameservers
+  description = "Nameservers de Route53 (solo si use_custom_domain=true)."
+  value       = var.use_custom_domain ? module.route53[0].nameservers : []
 }
 
 output "custom_domain" {
-  value = var.domain_name
+  value = var.use_custom_domain ? var.domain_name : "(sin dominio personalizado)"
 }

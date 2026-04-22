@@ -25,9 +25,16 @@ variable "aws_region" {
   default     = "us-east-1"
 }
 
+variable "use_custom_domain" {
+  type        = bool
+  description = "Si es false, usa la URL por defecto *.cloudfront.net y omite Route53/ACM."
+  default     = false
+}
+
 variable "domain_name" {
   type        = string
-  description = "Dominio principal (ej. cdn.ejemplo.com)."
+  description = "Dominio principal (ej. cdn.ejemplo.com). Ignorado si use_custom_domain=false."
+  default     = ""
 }
 
 variable "subject_alternative_names" {
@@ -43,18 +50,18 @@ variable "logs_retention_days" {
 }
 
 variable "uploads_ia_transition_days" {
-  type        = number
-  default     = 30
+  type    = number
+  default = 30
 }
 
 variable "uploads_glacier_transition_days" {
-  type        = number
-  default     = 90
+  type    = number
+  default = 90
 }
 
 variable "uploads_expiration_days" {
-  type        = number
-  default     = 365
+  type    = number
+  default = 365
 }
 
 variable "enable_waf" {

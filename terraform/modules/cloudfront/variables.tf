@@ -15,7 +15,9 @@ variable "logs_bucket_domain_name" {
 }
 
 variable "acm_certificate_arn" {
-  type = string
+  type        = string
+  description = "ARN del cert ACM en us-east-1. Vacío = usar cert default *.cloudfront.net."
+  default     = ""
 }
 
 variable "aliases" {
