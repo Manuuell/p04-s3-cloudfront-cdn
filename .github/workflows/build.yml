@@ -1,0 +1,50 @@
+name: build
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'web/**'
+      - 'lambda/**'
+  pull_request:
+    paths:
+      - 'web/**'
+      - 'lambda/**'
+
+jobs:
+  build-web:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # TODO: instalar dependencias del sitio estático si aplica
+      # TODO: compilar/empaquetar (npm run build, hugo, etc.)
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: web-static
+          path: web/
+
+  build-lambda:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: lambda/security-headers
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: lambda/security-headers/package-lock.json
+
+      - run: npm ci
+      - run: npm test
+      - run: zip -r function.zip index.js node_modules/
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: lambda-security-headers
+          path: lambda/security-headers/function.zip

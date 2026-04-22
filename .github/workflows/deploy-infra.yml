@@ -1,0 +1,44 @@
+name: deploy-infra
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Entorno destino'
+        required: true
+        default: 'dev'
+        type: choice
+        options: [dev, prod]
+  push:
+    branches: [main]
+    paths:
+      - 'terraform/**'
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: terraform
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: us-east-1
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.9.0
+
+      - run: terraform fmt -check -recursive
+      - run: terraform init -backend-config=envs/${{ inputs.environment || 'dev' }}/backend.hcl
+      - run: terraform validate
+      - run: terraform plan -var-file=envs/${{ inputs.environment || 'dev' }}/terraform.tfvars -out=tfplan
+      - run: terraform apply -auto-approve tfplan

@@ -1,0 +1,14 @@
+{
+  "name": "security-headers",
+  "version": "1.0.0",
+  "description": "Lambda@Edge que inyecta headers de seguridad HTTP en viewer-response.",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --coverage",
+    "lint": "echo 'TODO: eslint'"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
+  },
+  "license": "MIT"
+}
